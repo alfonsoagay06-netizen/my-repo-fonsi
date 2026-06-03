@@ -1,3 +1,4 @@
+import time
 from fastapi import FastAPI, APIRouter, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -5,6 +6,9 @@ from fastapi.exceptions import RequestValidationError
 
 # 1. Initialize FastAPI
 app = FastAPI(title="Bhutan Voice-First AI Gateway")
+
+# InMemory storage to track request timestamps per client IP
+CLIENT_REQUEST_LOGS = {}
 
 # 2. Configure Secure CORS Middleware
 app.add_middleware(
@@ -14,6 +18,30 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 5. Rate Limiter Middleware (Fulfilling the final acceptance criteria)
+@app.middleware("http")
+async def rate_limiter_middleware(request: Request, call_next):
+    client_ip = request.client.host if request.client else "unknown"
+    current_time = time.time()
+    
+    # Fetch request history for this IP and clear records older than 60 seconds
+    request_times = CLIENT_REQUEST_LOGS.get(client_ip, [])
+    request_times = [t for t in request_times if current_time - t < 60]
+    
+    # Example threshold: Maximum of 100 requests per minute
+    if len(request_times) >= 100:
+        return JSONResponse(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            content={"error": "Rate limit exceeded", "message": "Too many requests. Please try again later."}
+        )
+    
+    # Record the current request timestamp
+    request_times.append(current_time)
+    CLIENT_REQUEST_LOGS[client_ip] = request_times
+    
+    response = await call_next(request)
+    return response
 
 # 3. Handle Invalid Parameters with Custom JSON Error Payloads
 @app.exception_handler(RequestValidationError)
@@ -35,10 +63,9 @@ async def health_check():
         "version": "1.0.0"
     }
 
-# 5. Placeholder for Main Router Blueprint (where voice/text routing will go)
+# Placeholder for Main Router Blueprint (where voice/text routing will go)
 @v1_router.post("/query", tags=["Routing"])
 async def route_voice_query(payload: dict):
-    # This will later map voice tokens onto target processors
     return {"message": "Gateway received query successfully"}
 
 # Include the versioned router into the main app
