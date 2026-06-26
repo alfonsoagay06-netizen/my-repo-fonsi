@@ -1,0 +1,12 @@
+# OS / editor cruft
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.log
+
+# Node (only if you add tooling later)
+node_modules/
+
+# Editor config (local only)
+.vscode/
