@@ -1280,6 +1280,13 @@ main {
     font-weight: 600;
 }
 
+.cert-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    align-items: center;
+}
+
 /* =================================================================
    Certificates
    ================================================================= */
