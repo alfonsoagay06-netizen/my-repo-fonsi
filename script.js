@@ -261,12 +261,65 @@
     /* ---------------------------------------------------------------
        Contact form
     --------------------------------------------------------------- */
+    // Google Apps Script Web App endpoint (saves to Sheet + emails + phone push).
+    // Paste the deployed /exec URL here once the backend is set up.
+    const CONTACT_ENDPOINT = 'PASTE_APPS_SCRIPT_EXEC_URL_HERE';
+
     const contactForm = $('#contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        const statusEl = $('#formStatus');
+        const submitBtn = contactForm.querySelector('.submit-btn');
+
+        const setStatus = (msg, type) => {
+            if (!statusEl) return;
+            statusEl.textContent = msg;
+            statusEl.classList.remove('is-success', 'is-error');
+            if (type) statusEl.classList.add(type === 'ok' ? 'is-success' : 'is-error');
+        };
+
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('Thanks for reaching out! Your message has been received.');
-            contactForm.reset();
+
+            // Honeypot: if filled, silently treat as success (likely a bot).
+            if (contactForm.company && contactForm.company.value.trim() !== '') {
+                setStatus('Thanks for reaching out! Your message has been received.', 'ok');
+                contactForm.reset();
+                return;
+            }
+
+            // Fallback while backend isn't configured yet: open the user's email client.
+            if (!CONTACT_ENDPOINT || CONTACT_ENDPOINT.indexOf('PASTE_') === 0) {
+                const subject = encodeURIComponent('Portfolio inquiry from ' + (contactForm.name.value || 'website'));
+                const body = encodeURIComponent(
+                    'Name: ' + contactForm.name.value + '\n' +
+                    'Email: ' + contactForm.email.value + '\n\n' +
+                    contactForm.message.value
+                );
+                window.location.href = 'mailto:alfonsoagay06@gmail.com?subject=' + subject + '&body=' + body;
+                setStatus('Opening your email app…', 'ok');
+                return;
+            }
+
+            const original = submitBtn ? submitBtn.textContent : '';
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+            setStatus('Sending your message…');
+
+            try {
+                // FormData => no custom headers => no CORS preflight against Apps Script.
+                const res = await fetch(CONTACT_ENDPOINT, {
+                    method: 'POST',
+                    body: new FormData(contactForm)
+                });
+                let ok = res.ok;
+                try { const data = await res.json(); ok = ok && data && data.result === 'success'; } catch (_) {}
+                if (!ok) throw new Error('Request failed');
+                setStatus('Thanks for reaching out! Your message has been received.', 'ok');
+                contactForm.reset();
+            } catch (err) {
+                setStatus('Something went wrong. Please email alfonsoagay06@gmail.com directly.', 'error');
+            } finally {
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = original; }
+            }
         });
     }
 })();
