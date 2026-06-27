@@ -159,25 +159,27 @@ section {
     color: var(--bg);
 }
 
-/* Upwork "Become a Client" CTA */
-.btn-upwork {
+/* Upwork CTA pill in the header — sized like .header-cta but slightly bigger */
+.header-upwork {
+    padding: 11px 22px;
+    font-size: 0.92rem;
+    font-weight: 600;
     background: #14a800;
     border-color: #14a800;
     color: #fff;
-    margin: 4px 0 8px;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
 }
 
-.btn-upwork::before {
+.header-upwork:hover {
     background: #108a00;
-}
-
-.btn-upwork:hover {
+    border-color: #108a00;
     color: #fff;
 }
 
-.btn-upwork svg {
-    width: 20px;
-    height: 20px;
+.header-upwork svg {
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
 }
 
@@ -378,6 +380,12 @@ section {
 .nav-desktop a:hover::after,
 .nav-desktop a.active::after {
     width: 100%;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .header-cta {
@@ -1666,7 +1674,7 @@ main {
    ================================================================= */
 @media (max-width: 1024px) {
     .nav-desktop,
-    .header-cta {
+    .header-actions {
         display: none;
     }
 
