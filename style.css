@@ -751,9 +751,11 @@ body.menu-open .mobile-menu nav a {
     padding: 16px clamp(16px, 2.6vw, 36px);
 }
 
-.marquee-track .star {
-    opacity: 0.55;
-    font-size: 0.8em;
+.marquee-track .m-icon {
+    width: 1.15em;
+    height: 1.15em;
+    margin-right: 0.5em;
+    flex-shrink: 0;
 }
 
 @keyframes marquee {
