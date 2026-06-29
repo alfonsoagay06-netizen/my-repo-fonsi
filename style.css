@@ -1560,6 +1560,8 @@ main {
     --cb: #34bde6;
     --cb-deep: #0f2c4d;
     position: relative;
+    text-decoration: none;
+    color: inherit;
     aspect-ratio: 1 / 1;
     border-radius: 22px;
     overflow: hidden;
@@ -1640,6 +1642,42 @@ main {
     font-size: 0.82rem;
     color: var(--ink-2);
     line-height: 1.4;
+}
+
+.cbadge-cap-link {
+    color: var(--ink);
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    background-image: linear-gradient(var(--ink), var(--ink));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s var(--ease);
+}
+
+.cbadge-cap-link:hover {
+    background-size: 100% 1px;
+}
+
+/* "open" cue on the clickable badge */
+.cbadge::after {
+    content: '↗';
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--cb-deep);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.cbadge:hover::after {
+    opacity: 0.9;
+    transform: none;
 }
 
 .cert-subhead {
