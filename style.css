@@ -40,6 +40,9 @@ html {
 
 body {
     background-color: var(--bg);
+    background-image: radial-gradient(rgba(22, 21, 18, 0.04) 1px, transparent 1.4px);
+    background-size: 26px 26px;
+    background-position: -2px -2px;
     color: var(--ink);
     font-family: 'Inter', sans-serif;
     font-size: var(--fs-body);
@@ -860,6 +863,41 @@ main {
     color: var(--ink);
 }
 
+.about-facts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: clamp(28px, 3.5vw, 44px);
+}
+
+.about-facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 18px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: var(--bg-2);
+    transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.about-facts li:hover {
+    transform: translateY(-3px);
+    border-color: var(--ink);
+    box-shadow: 0 16px 30px -22px rgba(0, 0, 0, 0.45);
+}
+
+.about-facts svg {
+    width: 16px;
+    height: 16px;
+    color: var(--ink-2);
+    flex-shrink: 0;
+}
+
 /* =================================================================
    Skills
    ================================================================= */
@@ -893,13 +931,25 @@ main {
     gap: 10px;
 }
 
-.skill-category h3::before {
-    content: '';
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--ink);
+.skill-ic {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
     flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--ink);
+    color: var(--bg);
+    transition: transform 0.5s var(--ease);
+}
+
+.skill-ic svg {
+    width: 21px;
+    height: 21px;
+}
+
+.skill-category:hover .skill-ic {
+    transform: rotate(-6deg) scale(1.06);
 }
 
 .skill-tags {
@@ -1394,6 +1444,214 @@ main {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
     font-size: 0.9rem;
+}
+
+/* ---- News-style ticker ---- */
+.ticker {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: var(--bg-2);
+    overflow: hidden;
+    margin-bottom: clamp(40px, 5vw, 68px);
+    box-shadow: 0 18px 40px -30px rgba(0, 0, 0, 0.4);
+}
+
+.ticker-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    flex-shrink: 0;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 13px clamp(16px, 2vw, 24px);
+    border-radius: 999px;
+}
+
+.ticker-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2ec27e;
+    box-shadow: 0 0 0 0 rgba(46, 194, 126, 0.5);
+    animation: pulse 2.4s infinite;
+    flex-shrink: 0;
+}
+
+.ticker-view {
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.ticker-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    white-space: nowrap;
+    animation: marquee 40s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+    animation-play-state: paused;
+}
+
+.ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(16px, 2.4vw, 30px);
+    padding: 0 clamp(16px, 2.4vw, 30px);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+}
+
+.ticker-item i {
+    font-style: normal;
+    font-size: 0.62em;
+    color: var(--ink-3);
+}
+
+/* ---- Cisco Networking Academy showcase ---- */
+.cisco-showcase {
+    margin-bottom: clamp(44px, 5.5vw, 76px);
+}
+
+.cisco-showcase-head {
+    margin-bottom: clamp(24px, 3vw, 38px);
+}
+
+.cisco-showcase-head h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.9rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+
+.cisco-showcase-head p {
+    color: var(--ink-2);
+    max-width: 64ch;
+}
+
+.cbadge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: clamp(18px, 2vw, 28px);
+}
+
+.cbadge-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.cbadge {
+    --cb: #34bde6;
+    --cb-deep: #0f2c4d;
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 22px;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--cb);
+    padding: clamp(16px, 1.7vw, 22px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 22px 44px -26px rgba(0, 0, 0, 0.55);
+    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+}
+
+.cbadge--green {
+    --cb: #84c341;
+    --cb-deep: #16431f;
+}
+
+.cbadge:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 34px 64px -28px rgba(0, 0, 0, 0.6);
+}
+
+.cbadge-waves {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.cbadge-head {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.cbadge-logo {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    color: #fff;
+}
+
+.cbadge-academy {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.84rem;
+    line-height: 1.04;
+    color: var(--cb-deep);
+}
+
+.cbadge-verified {
+    align-self: flex-start;
+    margin: clamp(13px, 1.6vw, 18px) 0 0 calc(-1 * clamp(16px, 1.7vw, 22px));
+    padding: 7px 16px 7px clamp(16px, 1.7vw, 22px);
+    background: var(--cb-deep);
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.84rem;
+    letter-spacing: 0.02em;
+    border-radius: 0 999px 999px 0;
+}
+
+.cbadge-course {
+    margin-top: auto;
+    text-align: right;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.92rem, 0.82rem + 0.4vw, 1.12rem);
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+    color: var(--cb-deep);
+}
+
+.cbadge-cap {
+    padding: 0 4px;
+    font-size: 0.82rem;
+    color: var(--ink-2);
+    line-height: 1.4;
+}
+
+.cert-subhead {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--line);
 }
 
 /* =================================================================
