@@ -732,7 +732,7 @@ body.menu-open .mobile-menu nav a {
 .marquee-track {
     display: flex;
     width: max-content;
-    animation: marquee 32s linear infinite;
+    animation: marquee 80s linear infinite;
 }
 
 .marquee:hover .marquee-track {
